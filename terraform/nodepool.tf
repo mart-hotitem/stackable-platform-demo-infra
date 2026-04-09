@@ -1,16 +1,24 @@
 resource "ionoscloud_k8s_node_pool" "demo_pool" {
-  name              = "demo-nodepool"
-  k8s_cluster_id    = ionoscloud_k8s_cluster.demo.id
+  name             = "stackable-demo-nodepool"
+  k8s_cluster_id   = ionoscloud_k8s_cluster.demo.id
+  datacenter_id    = ionoscloud_datacenter.demo.id
+  k8s_version      = ionoscloud_k8s_cluster.demo.k8s_version
+  
+  node_count       = 2
+  cores_count      = 4
+  ram_size         = 10240   # MB = 10 GiB
+  storage_size     = 200      # GB
+  cpu_family       = "INTEL_SKYLAKE"
+  availability_zone     = "AUTO"
+  storage_type          = "SSD"
 
-  node_count        = var.nodepool_enabled ? 2 : 0
+  # Optional but recommended metadata
+  labels = {
+    role = "demo"
+    app  = "stackable"
+  }
 
-  cores             = 4
-  ram               = 10240   # 10 GB
-  storage_size      = 50       # GB
-  cpu_family        = "INTEL_SKYLAKE"
-
-  auto_scaling {
-    min_node_count = var.nodepool_enabled ? 2 : 0
-    max_node_count = 2
+  annotations = {
+    environment = "demo"
   }
 }

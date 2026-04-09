@@ -4,8 +4,3 @@ variable "ionos_token" {
   sensitive   = true
 }
 
-variable "nodepool_enabled" {
-  description = "Enable or disable the demo node pool"
-  type        = bool
-  default     = true
-}
